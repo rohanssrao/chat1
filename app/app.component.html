@@ -1,0 +1,34 @@
+<div id="login" [hidden]="loggedIn" [ngClass]="{fadeOut: loggedIn, fadeIn: !loggedIn}">
+   <form id="loginForm" (submit)="loginRequest(username)" name="loginForm">
+      <label for="typeUsername" style="color: white; !important">Username</label>
+      <input type="text" id="typeUsername" [(ngModel)]="username" name="username" maxlength=10 required autocomplete="off" />
+      <button class="btn waves-effect waves-light" id="loginButton" type="submit">Join <span [hidden]="!username"> as <span class="gray">{{username}}</span></span></button>
+   </form>
+   <div id="googleLogin" class="g-signin2" data-onsuccess="onSignIn"></div>
+</div>
+
+<div id="chatPane" [hidden]="!loggedIn" [ngClass]="{fadeOut: !loggedIn, fadeIn: loggedIn}">
+   <div style="width: calc(100vw - 20px); overflow: hidden;">
+      <div id="chat" style="height: calc(100vh - 75px); width: 100vw; overflow: scroll;">
+         <div id="fixed">
+            <form id="chatForm">
+               <input type="text" id="enterMessage" placeholder="Enter message here" autocomplete="off" [(ngModel)]="chatMessage" name="chatMessage" maxlength=5000 />
+               <div class="btn waves-effect waves-light" id="uploadImageContainer" onclick="$('#uploadImage').click()"><img src="image-upload.svg" style="height: 100%; z-index: -1"><input type="file" id="uploadImage" style="display: none;"></div>
+               <button class="btn waves-effect waves-light" type="submit" id="submitMessage">Send</button>
+            </form>
+         </div>
+         <div id="scroll">
+            <ul id="messages"></ul>
+         </div>
+         <div id="container">
+            <header id="onlineNum"></header>
+            <ul id="online"></ul>
+            <button class="btn btn-float waves-effect waves-light" (click)="logOut()" id="logout">Log out</button>
+         </div>
+         <div id="containerBottom">
+            <p id="whosTyping"></p>
+            <p id="newMessages" [hidden]="newMessages === 0">{{newMessages}} new message<span [hidden]="newMessages < 2">s</span></p>
+         </div>
+      </div>
+   </div>
+</div>

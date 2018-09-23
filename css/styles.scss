@@ -1,0 +1,494 @@
+@mixin long-shadow($type, $color, $length, $fadeout: true, $skew: false, $direction: right) {
+   $shadow: '';
+   @if $skew == false or $type == text {
+       @if $direction == right{
+         @for $i from 0 to $length - 1 {
+            $shadow: $shadow + $i + 'px ' + $i + 'px 0 ' + $color + ',';
+         }
+      }
+      @if $direction == left {
+          @for $i from 0 to $length - 1{
+            $shadow: $shadow + $i * -1 + 'px ' + $i + 'px 0 ' + $color + ',';
+         }
+      }
+   }
+   @if $fadeout == true {
+       @for $i from 1 to $length - 1{
+         @if $type == text or $skew == false {
+             @if $direction == right{
+               $shadow: $shadow + $i + 'px ' + $i + 'px 0 ' + rgba($color, 1 - $i / $length) + ',';
+            }
+            @if $direction == left {
+               $shadow: $shadow + $i * -1 + 'px ' + $i + 'px 0 ' + rgba($color, 1 - $i / $length) + ',';
+            }
+         }
+         @if ($type == box) and $skew == true {
+             @if $direction == right{
+               $shadow: $shadow + $i + 'px ' + $i + 'px 0 ' + $i * 0.2 + 'px ' + rgba($color, 1 - $i / $length) + ',';
+            }
+            @if $direction == left {
+               $shadow: $shadow + $i * -1 + 'px ' + $i + 'px 0 ' + $i * 0.2 + 'px ' + rgba($color, 1 - $i / $length) + ',';
+            }
+         }
+      }
+      $shadow: $shadow + $length + 'px ' + $length + 'px 0 ' + rgba($color, 0);
+   }
+   @if $fadeout == false {
+       @if $skew == true and ( $type == box ){
+         @for $i from 0 to $length - 1 {
+            $shadow: $shadow + $i + 'px ' + $i + 'px 0 ' + $i * 0.1 + 'px ' + $color + ',';
+         }
+      }
+      $shadow: $shadow + $length + 'px ' + $length + 'px 0 ' + rgba(0,0,0,0);
+   }
+   $shadow: unquote($shadow);
+
+   @if $type == 'box' {
+      box-shadow: $shadow;
+   }
+
+   @if $type == 'text' {
+      text-shadow: $shadow;
+   }
+}
+@mixin centerInPage() {
+   top: 50%;
+   left: 50%;
+   -webkit-transform: translate(-50%,-50%);
+   transform: translate(-50%,-50%);
+}
+
+$centerAbsolute: translate(-50%,-50%);
+
+html {
+    font-family: 'Roboto', Cambria, Cochin, Georgia, Times, Times New Roman, serif
+}
+
+.ng-cloak,
+[ng-cloak],
+[ng\:cloak] {
+   display: none !important;
+}
+
+.gray {
+   color: rgb(255, 157, 0);
+}
+
+#loginForm input {
+   color: white !important;
+   font-size: 1.2rem;
+}
+
+#loginButton {
+   background-color: teal;
+   text-align: center;
+   position: fixed;
+   top: 90%;
+   left: 50%;
+   white-space: nowrap;
+   -webkit-transform: translateX(-50%);
+   transform: translateX(-50%);
+   margin: 0 !important;
+   -webkit-transition: 0.3s;
+   transition: 0.3s;
+   font-weight: bold;
+   @include long-shadow($type: box, $color: #0a9aab, $length: 200, $fadeout: false, $skew: false, $direction: right);
+}
+
+#googleLogin {
+   background-color: teal;
+   text-align: center;
+   position: fixed;
+   display: inline;
+   top: 70%;
+   white-space: nowrap;
+   -webkit-transform: translateX(-50%);
+   transform: translateX(-50%);
+   margin: 0 !important;
+   -webkit-transition: 0.3s;
+   transition: 0.3s;
+   font-weight: bold;
+   @include long-shadow($type: box, $color: #0a9aab, $length: 100, $fadeout: false, $skew: false, $direction: right);
+}
+
+#loginForm {
+   position: fixed;
+   top: 35%;
+   left: 50%;
+   -webkit-transform: $centerAbsolute;
+   transform: $centerAbsolute;
+}
+
+#chatForm {
+   position: fixed;
+   bottom: -7px;
+   text-align: center;
+   width: 100vw;
+}
+
+#enterMessage {
+   font-family: 'Roboto';
+   font-size: 24px !important;
+   font-size: 1.5rem !important;
+   font-weight: 700;
+   width: 60vw;
+   margin-right: 5vw;
+   height: 35px;
+   line-height: 35px;
+   @include long-shadow($type: box, $color: rgb(200, 200, 200), $length: 50, $fadeout: false, $skew: false, $direction: right);
+   @include long-shadow($type: text, $color: rgb(200, 200, 200), $length: 50, $fadeout: false, $skew: false, $direction: right);
+   
+   &::-webkit-input-placeholder {
+       text-shadow: none;
+   }
+   
+   &::-moz-placeholder {
+       text-shadow: none;
+   }
+   
+   &:-ms-input-placeholder {
+       text-shadow: none;
+   }
+   
+   &::placeholder {
+       text-shadow: none;
+   }
+}
+
+#submitMessage, #uploadImageContainer {
+   font-family: 'Press Start 2P';
+   color: white;
+   font-size: 16px;
+   font-size: 1rem;
+   background-color: teal;
+   margin-bottom: 5px;
+   -webkit-transition: 0.3s;
+   transition: 0.3s;
+   @include long-shadow($type: box, $color: rgb(200, 200, 200), $length: 50, $fadeout: false, $skew: false, $direction: right);
+}
+
+#uploadImageContainer {
+    margin-right: 3%;
+    padding: 0px 10px;
+}
+
+#submitMessage {
+    width: 15vw;
+}
+
+#messages {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+}
+
+#messages li:nth-child(odd) {
+   background: #eee;
+}
+
+#messages li {
+   font-family: 'Roboto';
+   font-size: 20px;
+   font-size: 1.25rem;
+   font-weight: 500;
+   overflow: auto;
+   padding: 10px;
+   border-radius: 10px;
+   margin: 5px;
+}
+
+#messages li {
+   -webkit-animation-name: liftUp;
+   animation-name: liftUp;
+   -webkit-animation-iteration-count: 1;
+   animation-iteration-count: 1;
+   -webkit-animation-timing-function: ease;
+   animation-timing-function: ease;
+   -webkit-animation-duration: 0.3s;
+   animation-duration: 0.3s;
+}
+@-webkit-keyframes liftUp {
+   0% {
+      -webkit-transform: translateX(30px);
+      transform: translateX(30px);
+      opacity: 0;
+   }
+
+   100% {
+      opacity: 1;
+   }
+}
+@keyframes liftUp {
+   0% {
+      -webkit-transform: translateX(30px);
+      transform: translateX(30px);
+      opacity: 0;
+   }
+
+   100% {
+      opacity: 1;
+   }
+}
+
+#container {
+   font-family: 'Press Start 2P';
+   font-size: 16px;
+   font-size: 1rem;
+   top: 10px;
+   top: 0.625rem;
+   position: fixed;
+   right: 5px;
+   text-align: center;
+   width: 15vw;
+}
+
+#containerBottom {
+   font-family: 'Press Start 2P';
+   font-size: 16px;
+   font-size: 1rem;
+   bottom: 50px;
+   position: fixed;
+   right: 10px;
+   text-align: center;
+   width: 15vw;
+}
+
+#newMessages,
+#whosTyping {
+   color: rgb(255, 99, 0);
+}
+
+#online {
+   margin-top: 4px;
+   margin-top: 0.25rem;
+   position: relative;
+   list-style-type: none;
+   padding-left: 0;
+}
+
+#online li {
+   padding-top: 8px;
+   padding-top: 0.5rem;
+   padding-bottom: 8px;
+   padding-bottom: 0.5rem;
+}
+
+#fixed {
+   position: fixed;
+   bottom: 0;
+   z-index: 2;
+}
+
+#scroll {
+   position: relative;
+   z-index: 1;
+   width: 80%;
+}
+
+iframe {
+   border: none;
+   box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.75);
+   width: 400px;
+   height: 225px;
+}
+
+#messages img:not(.profilePic) {
+   box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.75);
+}
+
+.profilePic {
+    border-radius: 5px;
+    max-width: 25px;
+    margin-left: 10px;
+    margin-bottom: -5px;
+}
+
+
+.rightAlign {
+   text-align: right;
+}
+
+#login {
+   -webkit-transition: 0.2s ease;
+   transition: 0.2s ease;
+   color: #fff;
+   background-color: #00acc1;
+   border-radius: 10px !important;
+   margin-left: auto;
+   margin-right: auto;
+   position: fixed;
+   overflow: hidden;
+   @include centerInPage();
+   -webkit-animation-name: scaleIn;
+   animation-name: scaleIn;
+   -webkit-animation-iteration-count: 1;
+   animation-iteration-count: 1;
+   -webkit-animation-timing-function: ease-out;
+   animation-timing-function: ease-out;
+   -webkit-animation-duration: 0.6s;
+   animation-duration: 0.6s;
+   @include long-shadow($type: box, $color: rgb(200, 200, 200), $length: 500, $fadeout: false, $skew: false, $direction: right);
+}
+@-webkit-keyframes scaleIn {
+   0% {
+      -webkit-transform-origin: 0 0;
+      transform-origin: 0 0;
+      -webkit-transform: rotate(1);
+      transform: rotate(1);
+   }
+}
+@keyframes scaleIn {
+   0% {
+      -webkit-transform-origin: 0 0;
+      transform-origin: 0 0;
+      -webkit-transform: rotate(1);
+      transform: rotate(1);
+   }
+}
+@-webkit-keyframes scaleOut {
+   0% {
+      -webkit-transform: $centerAbsolute scale(1);
+      transform: $centerAbsolute scale(1);
+   }
+
+   100% {
+      -webkit-transform: $centerAbsolute scale(0);
+      transform: $centerAbsolute scale(0);
+      box-shadow: none;
+   }
+}
+@keyframes scaleOut {
+   0% {
+      -webkit-transform: $centerAbsolute scale(1);
+      transform: $centerAbsolute scale(1);
+   }
+
+   100% {
+      -webkit-transform: $centerAbsolute scale(0);
+      transform: $centerAbsolute scale(0);
+      box-shadow: none;
+   }
+}
+@media screen and (orientation: landscape) {
+   #login {
+      padding: 25vh;
+   }
+}
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+   #login {
+      padding: 150px 200px;
+   }
+}
+@media screen and (max-width: 450px) {
+    #submitMessage {
+        font-size: 0.8rem;
+    }
+    #enterMessage::-webkit-input-placeholder {
+        font-size: 1.1rem;
+    }
+    #enterMessage::-moz-placeholder {
+        font-size: 1.1rem;
+    }
+    #enterMessage:-ms-input-placeholder {
+        font-size: 1.1rem;
+    }
+    #enterMessage::placeholder {
+        font-size: 1.1rem;
+    }
+}
+@media screen and (max-width: 420px) {
+    #enterMessage {
+        width: 50vw;
+    }
+    #submitMessage {
+        width: 20vw;
+    }
+}
+@media screen and (orientation: portrait) {
+   #login {
+      padding: 25vh 35vw;
+   }
+   #container {
+      width: 30vw;
+   }
+   #containerBottom {
+      width: 30vw;
+   }
+   #scroll {
+      width: 70%;
+   }
+}
+
+.fadeOut {
+   -webkit-animation-name: fadeOut;
+           animation-name: fadeOut;
+   -webkit-animation-delay: 0s;
+           animation-delay: 0s;
+   -webkit-animation-timing-function: ease-in;
+           animation-timing-function: ease-in;
+   -webkit-animation-duration: 0.3s;
+           animation-duration: 0.3s;
+}
+
+@-webkit-keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+            animation-name: fadeIn;
+    -webkit-animation-delay: 0s;
+            animation-delay: 0s;
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in;
+    -webkit-animation-duration: 0.3s;
+            animation-duration: 0.3s;
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#logout {
+   background-color: teal;
+   color: white;
+   border-radius: 5px !important;
+   width: 75%;
+   font-size: 0.86rem;
+   font-size: 12px;
+   height: auto;
+   line-height: 2;
+   padding: 5px 0 !important;
+}
+
+#logout, #submitMessage {
+   padding: 0;
+}
